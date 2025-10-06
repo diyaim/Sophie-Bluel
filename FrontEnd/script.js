@@ -347,6 +347,27 @@ openmodal2.addEventListener("click", () => {
 });
 
 
+//fermer la modal avec le bouton +
+closemodal2.addEventListener("click", () => { // !!!!!!!!!faire une fonction 
+    modal2.setAttribute("aria-hidden", "true");
+})
+//fermer la modal au click en dehors de la modal 
+modal2.addEventListener("click", (e) => {
+    if (e.target === modal2) {
+        modal2.setAttribute("aria-hidden", "true");
+    }
+});
+
+//retour a modal1
+const precedent = document.getElementById("precedent");
+precedent.addEventListener("click", () => {
+    modal2.setAttribute("aria-hidden", "true");
+    modal1.setAttribute("aria-hidden", "false");
+})
+
+console.log(localStorage.getItem("token"));
+
+
 
 // les functions 
 // récupération des travaux 
