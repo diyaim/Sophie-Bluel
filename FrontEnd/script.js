@@ -1,7 +1,7 @@
 //étape 2: affichage dynamique des traveaux grace a l'appel d'API 
 
 let allWorks = []; // tableau de traveaux 
-getWork();         //vharger la galerie a l'ouverture de la page
+getWork();         //charger la galerie a l'ouverture de la page
 
 //étape 3 et 4: filtres dynamiques 
 
@@ -73,7 +73,7 @@ fetch("http://localhost:5678/api/categories")
     });
 
 //étape 5: connexion 
-
+//login.js 
 
 // passage en mode édition aprés connexion 
 const afficherBandeau = document.querySelector("#edition");
@@ -114,7 +114,7 @@ openmodal1.addEventListener("click", () => {
                 const imageModal1 = document.createElement("img");
                 const poubelle = document.createElement("button");
 
-                const id = data[i].id;// récuperer l'id de l'image 
+                const id = data[i].id; // récuperer l'id de l'image 
                 figure1.dataset.id = id; //stocker l'id
 
                 imageModal1.src = data[i].imageUrl; // source de l'image
@@ -141,7 +141,7 @@ openmodal1.addEventListener("click", () => {
 
                             if (response.status === 200 || response.status === 204) {
                                 figure1.remove();//supprimer du Dom
-                                getWork() //télévharger la nouvelle version des traveaux
+                                getWork() //télécharger la nouvelle version des traveaux
 
                             } else if (response.status === 401) {
                                 alert("non autorisé");
@@ -181,8 +181,7 @@ modal1.addEventListener("click", (e) => {
 
 // gerer l'ouverture et la fermeture de la modal2
 
-const modal2 = document.getElementById("modal2");
-const closemodal2 = document.getElementById("closemodal2");
+
 const openmodal2 = document.getElementById("openmodal2");
 //ouvrir la modal
 openmodal2.addEventListener("click", () => {
@@ -264,7 +263,7 @@ openmodal2.addEventListener("click", () => {
                     categories.appendChild(option);
                 }
 
-                activeBtn();  // met à jour le bouton sans obliger l'utilisateur à re-cliquer le select
+                activeBtn();  // met à jour le bouton sans re-cliquer le select
             });
     });
 
@@ -307,12 +306,12 @@ openmodal2.addEventListener("click", () => {
                     erreur.style.display = "none";
                     succes.textContent = "Projet ajouté avec succés";
                     succes.style.display = "block";
-                    alert("Projet envoyé )");
+                   // alert("Projet envoyé )");
                     getWork()
 
                     modal2.setAttribute("aria-hidden", "true"); //fermer modal 
                 } else if (response.status === 400) {
-                    alert("	Bad Request"); //???????
+                    alert("	Bad Request"); 
                 } else if (response.status === 401) {
                     alert("non autorisé");
                 } else if (response.status === 500) {
@@ -348,19 +347,25 @@ openmodal2.addEventListener("click", () => {
 
 
 //fermer la modal avec le bouton +
-closemodal2.addEventListener("click", () => { // !!!!!!!!!faire une fonction 
-    modal2.setAttribute("aria-hidden", "true");
-})
+const closemodal2 = document.getElementById("closemodal2");
+const modal2 = document.getElementById("modal2");
+fermerModal(modal2, closemodal2);
+// closemodal2.addEventListener("click", () => { // !!!!!!!!!faire une fonction 
+//     modal2.setAttribute("aria-hidden", "true");
+// })
+
 //fermer la modal au click en dehors de la modal 
-modal2.addEventListener("click", (e) => {
-    if (e.target === modal2) {
-        modal2.setAttribute("aria-hidden", "true");
-    }
-});
+
+
+// modal2.addEventListener("click", (e) => {
+//     if (e.target === modal2) {
+//         modal2.setAttribute("aria-hidden", "true");
+//     }
+// });
 
 //retour a modal1
-const precedent = document.getElementById("precedent");
-precedent.addEventListener("click", () => {
+const retour = document.getElementById("precedent");
+retour.addEventListener("click", () => {
     modal2.setAttribute("aria-hidden", "true");
     modal1.setAttribute("aria-hidden", "false");
 })
@@ -406,6 +411,19 @@ function createimage(imageUrl, title) {
 
 
     return figureElement;
+}
+
+// open et close modale 
+function fermerModal(modal, closemodal){
+    closemodal.addEventListener("click", () => { 
+    modal.setAttribute("aria-hidden", "true");
+})
+
+modal2.addEventListener("click", (e) => {
+    if (e.target === modal2) {
+        modal2.setAttribute("aria-hidden", "true");
+    }
+});
 }
 
 // deconnexion: function appelée en html 

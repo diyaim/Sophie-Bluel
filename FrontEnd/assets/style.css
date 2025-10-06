@@ -147,6 +147,18 @@ header {
 	justify-content: space-between;
 	margin: 50px 0
 }
+/* partie pour le menu  */
+a {
+  text-decoration: none;             
+}
+a:visited {
+  color: inherit; 
+}
+
+ a.active {
+  font-weight: 700;
+}
+
 
 section {
 	margin: 50px 0
@@ -650,3 +662,4 @@ small {
 	margin-top: 4px;
 	margin: auto;
 }
+
