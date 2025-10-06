@@ -91,6 +91,92 @@ if (localStorage.getItem("token") != null) { //si connecté
 }
 
 
+// étapes 6 et 7: ajout de la modale, suppression des traveaux 
+
+// gerer l'ouverture et la fermeture de la modale 1
+const modal1 = document.getElementById("modal1");
+const closemodal1 = document.getElementById("closemodal");
+const openmodal1 = document.getElementById("openmodal");
+
+//ouvrir la modal et charger les traveaux 
+openmodal1.addEventListener("click", () => {
+    modal1.setAttribute("aria-hidden", "false");
+
+    fetch("http://localhost:5678/api/works") // récuperer les données 
+        .then(response => response.json()) // transformer le retour de la requete en json
+        .then(data => {
+            const modalgallery1 = document.querySelector(".gallery1"); // récupération de la div qui contient les images du html
+            modalgallery1.innerHTML = ""; //vider la galerie
+
+            for (let i = 0; i < data.length; i++) {
+                // créations des éléments HTML
+                const figure1 = document.createElement("figure");
+                const imageModal1 = document.createElement("img");
+                const poubelle = document.createElement("button");
+
+                const id = data[i].id;// récuperer l'id de l'image 
+                figure1.dataset.id = id; //stocker l'id
+
+                imageModal1.src = data[i].imageUrl; // source de l'image
+                poubelle.className = "bouton-poubelle";
+                poubelle.innerHTML = '<i class="fa-solid fa-trash-can"></i>';//création du bouton poubelle
+
+                console.log(figure1.dataset);
+                console.log(id);
+
+                // supprimer les images
+                poubelle.addEventListener("click", () => {
+
+                    console.log(figure1);
+                    const token = localStorage.getItem("token");
+
+                    fetch(`http://localhost:5678/api/works/${id}`, {
+                        method: "DELETE",
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                        .then(response => {
+                            console.log("status : ", response.status)
+
+                            if (response.status === 200 || response.status === 204) {
+                                figure1.remove();//supprimer du Dom
+                                getWork() //télévharger la nouvelle version des traveaux
+
+                            } else if (response.status === 401) {
+                                alert("non autorisé");
+                            } else if (response.status === 500) {
+                                alert("Erreur serveur (500)");
+                            } else {
+                                alert("suppression impossible");
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert(`Erreur réseau : ${error.message}`);
+                        }
+                        )
+                })
+                // ajouter les éléments dans le Dom
+                figure1.appendChild(imageModal1); // ajout des images à l'élément figure
+                figure1.appendChild(poubelle);
+                modalgallery1.appendChild(figure1);
+            }
+
+        })
+})
+//fermer la modal avec le bouton +
+closemodal1.addEventListener("click", () => {
+    modal1.setAttribute("aria-hidden", "true");
+})
+//fermer la modal au click en dehors de la modal 
+modal1.addEventListener("click", (e) => {
+    if (e.target === modal1) {
+        modal1.setAttribute("aria-hidden", "true");
+    }
+});
+
+
 
 
 // les functions 
