@@ -1,6 +1,6 @@
-//étape 2: affichage dynamique des traveaux grace a l'appel d'API 
+//étape 2: affichage dynamique des travaux grace a l'appel d'API 
 
-let allWorks = []; // tableau de traveaux 
+let allWorks = []; // tableau de travaux 
 getWork();         //charger la galerie a l'ouverture de la page
 
 //étape 3 et 4: filtres dynamiques 
@@ -34,7 +34,7 @@ fetch("http://localhost:5678/api/categories")
             gallery.innerHTML = ""; // vider la galerie
 
             for (let j = 0; j < allWorks.length; j++) {
-                gallery.appendChild(createimage(allWorks[j].imageUrl, allWorks[j].title)); // afficher tous les traveaux 
+                gallery.appendChild(createimage(allWorks[j].imageUrl, allWorks[j].title)); // afficher tous les travaux 
             }
         });
 
@@ -60,7 +60,7 @@ fetch("http://localhost:5678/api/categories")
             });
         }
 
-        //affichage des traveaux
+        //affichage des travaux
         setActive(tous); // activer le bouton tous 
         const gallery = document.querySelector(".gallery");
         gallery.innerHTML = "";
@@ -91,14 +91,14 @@ if (localStorage.getItem("token") != null) { //si connecté
 }
 
 
-// étapes 6 et 7: ajout de la modale, suppression des traveaux 
+// étapes 6 et 7: ajout de la modale, suppression des travaux 
 
 // gerer l'ouverture et la fermeture de la modale 1
 const modal1 = document.getElementById("modal1");
 const closemodal1 = document.getElementById("closemodal");
 const openmodal1 = document.getElementById("openmodal");
 
-//ouvrir la modal et charger les traveaux 
+//ouvrir la modal et charger les travaux 
 openmodal1.addEventListener("click", () => {
     modal1.setAttribute("aria-hidden", "false");
 
@@ -121,13 +121,9 @@ openmodal1.addEventListener("click", () => {
                 poubelle.className = "bouton-poubelle";
                 poubelle.innerHTML = '<i class="fa-solid fa-trash-can"></i>';//création du bouton poubelle
 
-                console.log(figure1.dataset);
-                console.log(id);
-
                 // supprimer les images
                 poubelle.addEventListener("click", () => {
 
-                    console.log(figure1);
                     const token = localStorage.getItem("token");
 
                     fetch(`http://localhost:5678/api/works/${id}`, {
@@ -137,11 +133,9 @@ openmodal1.addEventListener("click", () => {
                         }
                     })
                         .then(response => {
-                            console.log("status : ", response.status)
-
                             if (response.status === 200 || response.status === 204) {
                                 figure1.remove();//supprimer du Dom
-                                getWork() //télécharger la nouvelle version des traveaux
+                                getWork() //télécharger la nouvelle version des travaux
 
                             } else if (response.status === 401) {
                                 alert("non autorisé");
@@ -162,25 +156,14 @@ openmodal1.addEventListener("click", () => {
                 figure1.appendChild(poubelle);
                 modalgallery1.appendChild(figure1);
             }
-
         })
 })
-//fermer la modal avec le bouton +
-closemodal1.addEventListener("click", () => {
-    modal1.setAttribute("aria-hidden", "true");
-})
-//fermer la modal au click en dehors de la modal 
-modal1.addEventListener("click", (e) => {
-    if (e.target === modal1) {
-        modal1.setAttribute("aria-hidden", "true");
-    }
-});
-
+//fermer la modale
+fermerModal(modal1, closemodal1);
 
 // étape 8: ajout d'un nouveau projet 
 
 // gerer l'ouverture et la fermeture de la modal2
-
 
 const openmodal2 = document.getElementById("openmodal2");
 //ouvrir la modal
@@ -199,7 +182,6 @@ openmodal2.addEventListener("click", () => {
     const infoFormat = document.getElementById("info-format"); // petit texte jpg, png : 4mo max
     const validerBtn = document.querySelector(".ajout-photo.valider"); // bouton Valider
     const form = document.querySelector(".champs-photos");
-
 
     erreur.style.display = "none"; // cache un ancien message d'erreur
     succes.style.display = "none"; // cache un ancien message de succès
@@ -267,7 +249,6 @@ openmodal2.addEventListener("click", () => {
             });
     });
 
-   
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -275,14 +256,12 @@ openmodal2.addEventListener("click", () => {
         const titre = document.getElementById("titre-photo").value.trim(); //récup le titre saisi sans les espaces
         const categorie = document.getElementById("category").value; //récup la catégorie 
 
-
         if (!fichier || !titre || !categorie) {
             erreur.textContent = "Veuillez remplir tous les champs avant de valider.";
             erreur.style.display = "block";
             return;
         }
 
-        //  Envoi à l’API
         // Création de l’objet FormData
         const formData = new FormData();
         formData.append("image", fichier);
@@ -300,18 +279,16 @@ openmodal2.addEventListener("click", () => {
             body: formData
         })
             .then(response => {
-                console.log("status : ", response.status)
-
                 if (response.status === 201 || response.status === 200) {
                     erreur.style.display = "none";
                     succes.textContent = "Projet ajouté avec succés";
                     succes.style.display = "block";
-                   // alert("Projet envoyé )");
+                    // alert("Projet envoyé )");
                     getWork()
 
                     modal2.setAttribute("aria-hidden", "true"); //fermer modal 
                 } else if (response.status === 400) {
-                    alert("	Bad Request"); 
+                    alert("	Bad Request");
                 } else if (response.status === 401) {
                     alert("non autorisé");
                 } else if (response.status === 500) {
@@ -341,7 +318,7 @@ openmodal2.addEventListener("click", () => {
     // on vérifie à chaque modification
 
     titreInput.addEventListener("input", activeBtn);
-    catSelect.addEventListener("change", activeBtn); //?????????
+    catSelect.addEventListener("change", activeBtn);
     activeBtn();
 });
 
@@ -350,29 +327,12 @@ openmodal2.addEventListener("click", () => {
 const closemodal2 = document.getElementById("closemodal2");
 const modal2 = document.getElementById("modal2");
 fermerModal(modal2, closemodal2);
-// closemodal2.addEventListener("click", () => { // !!!!!!!!!faire une fonction 
-//     modal2.setAttribute("aria-hidden", "true");
-// })
-
-//fermer la modal au click en dehors de la modal 
-
-
-// modal2.addEventListener("click", (e) => {
-//     if (e.target === modal2) {
-//         modal2.setAttribute("aria-hidden", "true");
-//     }
-// });
-
 //retour a modal1
 const retour = document.getElementById("precedent");
 retour.addEventListener("click", () => {
     modal2.setAttribute("aria-hidden", "true");
     modal1.setAttribute("aria-hidden", "false");
 })
-
-console.log(localStorage.getItem("token"));
-
-
 
 // les functions 
 // récupération des travaux 
@@ -384,12 +344,12 @@ function getWork() {
             worksGallery.innerHTML = ""; // Vider la galerie avant de la remplir
 
             for (let i = 0; i < data.length; i++) {
-                // Création des éléments
+                // Création des éléments 
                 const figure = createimage(data[i].imageUrl, data[i].title);
                 worksGallery.appendChild(figure);
             }
 
-            allWorks = data; // Stocker les traveaux
+            allWorks = data; // Stocker les travaux
         })
         .catch(error => {
             console.error("Erreur lors de la récupération des travaux :", error);
@@ -404,26 +364,25 @@ function createimage(imageUrl, title) {
 
     imageElement.src = imageUrl; // afficher les images
 
-    console.log(imageElement);
     captionElement.innerText = title; // afficher les titres
     figureElement.appendChild(imageElement); // ajout des images à l'élément figure
     figureElement.appendChild(captionElement); //ajout des titres à l'élément figure
-
 
     return figureElement;
 }
 
 // open et close modale 
-function fermerModal(modal, closemodal){
-    closemodal.addEventListener("click", () => { 
-    modal.setAttribute("aria-hidden", "true");
-})
-
-modal2.addEventListener("click", (e) => {
-    if (e.target === modal2) {
-        modal2.setAttribute("aria-hidden", "true");
-    }
-});
+function fermerModal(modal, closemodal) {
+    //fermer au click sur *
+    closemodal.addEventListener("click", () => {
+        modal.setAttribute("aria-hidden", "true");
+    });
+    //fermer au click en dehors de la modale 
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.setAttribute("aria-hidden", "true");
+        }
+    });
 }
 
 // deconnexion: function appelée en html 
