@@ -177,6 +177,175 @@ modal1.addEventListener("click", (e) => {
 });
 
 
+// étape 8: ajout d'un nouveau projet 
+
+// gerer l'ouverture et la fermeture de la modal2
+
+const modal2 = document.getElementById("modal2");
+const closemodal2 = document.getElementById("closemodal2");
+const openmodal2 = document.getElementById("openmodal2");
+//ouvrir la modal
+openmodal2.addEventListener("click", () => {
+    modal1.setAttribute("aria-hidden", "true");
+    modal2.setAttribute("aria-hidden", "false");
+
+    // récupèrationtous les éléments
+    const erreur = document.getElementById("erreur");  // zone du message d'erreur 
+    const succes = document.getElementById("succes"); // zone du message de succès 
+    const file = document.getElementById("file"); // input file pour choisir la photo
+    const titreInput = document.getElementById("titre-photo"); // champ texte du titre
+    const catSelect = document.getElementById("category"); // select des catégories
+    const imgPreviewContainer = document.getElementById("affiche-image"); // <img> qui affiche la prévisualisation
+    const inserer = document.getElementById("inserer-photo"); // bouton + Ajouter photos
+    const infoFormat = document.getElementById("info-format"); // petit texte jpg, png : 4mo max
+    const validerBtn = document.querySelector(".ajout-photo.valider"); // bouton Valider
+    const form = document.querySelector(".champs-photos");
+
+
+    erreur.style.display = "none"; // cache un ancien message d'erreur
+    succes.style.display = "none"; // cache un ancien message de succès
+
+    // vider les champs du formulaire
+    file.value = "";  // supprime le fichier sélectionné
+    titreInput.value = ""; // efface le titre saisi 
+    catSelect.value = "";  // efface la catégorie séléctionnée 
+
+    //  réinitialisation la zone de prévisualisation
+    imgPreviewContainer.src = "";   // enlève l'ancienne image de preview
+    imgPreviewContainer.style.display = "none";  // cache la balise <img> de preview
+    document.querySelector(".zone-photos-icone i").style.display = "block";  // ré-affiche l'icône
+    inserer.style.display = "flex"; // ré-affiche le bouton  Ajouter photos
+    infoFormat.style.display = "block";  // ré-affiche le texte jpg, png : 4mo max
+
+    //  re-désactive le bouton "Valider" au départ
+    validerBtn.disabled = true;  // empêche d'envoyer tant que tout n'est pas rempli
+    validerBtn.classList.remove("enabled");
+
+    //afficher l'image
+    file.addEventListener("change", () => { //pour charger le fichier
+        const imgpreview = file.files[0]
+
+        if (imgpreview) {
+            imgPreviewContainer.src = URL.createObjectURL(imgpreview)
+            // cacher l'icone
+            const icone = document.querySelector(".zone-photos-icone i");
+            icone.style.display = "none"
+            imgPreviewContainer.style.display = "block"
+            inserer.style.display = "none"
+            infoFormat.style.display = "none"// cacher le text
+        }
+        activeBtn();
+    })
+
+    //ajout des categorie 
+    const categories = document.getElementById("category");
+    let alreadyLoaded = false; // pour éviter le rechagement a chauqe fois 
+
+    categories.addEventListener("click", () => {
+        if (alreadyLoaded) return;
+        alreadyLoaded = true;
+        fetch("http://localhost:5678/api/categories")
+            .then(response => response.json())
+            .then(liste => {
+                categories.innerHTML = "";
+
+                // option placeholder
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = "";
+                placeholder.disabled = true;
+                placeholder.selected = true;
+                placeholder.hidden = true;
+                categories.appendChild(placeholder);
+                for (let i = 0; i < liste.length; i++) {
+                    const option = document.createElement("option");
+                    option.innerHTML = liste[i].name;
+                    option.value = liste[i].id;
+                    categories.appendChild(option);
+                }
+
+                activeBtn();  // met à jour le bouton sans obliger l'utilisateur à re-cliquer le select
+            });
+    });
+
+   
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const fichier = document.getElementById("file").files[0]; //récuperer l'imagee sélectionnée
+        const titre = document.getElementById("titre-photo").value.trim(); //récup le titre saisi sans les espaces
+        const categorie = document.getElementById("category").value; //récup la catégorie 
+
+
+        if (!fichier || !titre || !categorie) {
+            erreur.textContent = "Veuillez remplir tous les champs avant de valider.";
+            erreur.style.display = "block";
+            return;
+        }
+
+        //  Envoi à l’API
+        // Création de l’objet FormData
+        const formData = new FormData();
+        formData.append("image", fichier);
+        formData.append("title", titre);
+        formData.append("category", categorie);
+
+        //  Envoi à l’API
+        const token = localStorage.getItem("token");
+        fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json"
+            },
+            body: formData
+        })
+            .then(response => {
+                console.log("status : ", response.status)
+
+                if (response.status === 201 || response.status === 200) {
+                    erreur.style.display = "none";
+                    succes.textContent = "Projet ajouté avec succés";
+                    succes.style.display = "block";
+                    alert("Projet envoyé )");
+                    getWork()
+
+                    modal2.setAttribute("aria-hidden", "true"); //fermer modal 
+                } else if (response.status === 400) {
+                    alert("	Bad Request"); //???????
+                } else if (response.status === 401) {
+                    alert("non autorisé");
+                } else if (response.status === 500) {
+                    alert("Erreur serveur (500)");
+                } else {
+                    alert("envoi impossible");
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                erreur.textContent = "Erreur réseau. Veuillez réessayer plus tard.";
+                erreur.style.display = "block";
+            });
+
+    }, { once: true });
+
+    function activeBtn() {
+        const ok = file.files[0] && titreInput.value.trim() && catSelect.value;
+        validerBtn.disabled = !ok;
+        if (ok) {
+            validerBtn.classList.add("enabled");
+        } else {
+            validerBtn.classList.remove("enabled");
+        }
+
+    }
+    // on vérifie à chaque modification
+
+    titreInput.addEventListener("input", activeBtn);
+    catSelect.addEventListener("change", activeBtn); //?????????
+    activeBtn();
+});
+
 
 
 // les functions 
