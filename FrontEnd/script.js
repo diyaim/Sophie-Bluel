@@ -72,7 +72,48 @@ fetch("http://localhost:5678/api/categories")
         console.error(erreur);
     });
 
+//étape 5: connexion 
 
+
+// passage en mode édition aprés connexion 
+const afficherBandeau = document.querySelector("#edition");
+const filtersContainer = document.querySelector(".filtres");
+const login = document.querySelector(".login");
+const logoute = document.querySelector(".logout");
+const modificationBtn = document.querySelector(".boutonmodifier");
+
+if (localStorage.getItem("token") != null) { //si connecté
+    afficherBandeau.classList.add("editmodevisible"); //affiche bandeau 
+    filtersContainer.classList.add("btnedit"); //cache les filtres
+    login.classList.add("editmodeinvisible"); //cache login 
+    logoute.classList.remove("logout"); //affiche logout
+    modificationBtn.classList.remove("boutonmodifier"); //affiche le bouton modifier 
+}
+
+
+
+
+// les functions 
+// récupération des travaux 
+function getWork() {
+    fetch("http://localhost:5678/api/works") // Récupérer les données
+        .then(response => response.json()) // Transformer la réponse en JSON
+        .then(data => {
+            const worksGallery = document.querySelector(".gallery"); // Sélection de la galerie
+            worksGallery.innerHTML = ""; // Vider la galerie avant de la remplir
+
+            for (let i = 0; i < data.length; i++) {
+                // Création des éléments
+                const figure = createimage(data[i].imageUrl, data[i].title);
+                worksGallery.appendChild(figure);
+            }
+
+            allWorks = data; // Stocker les traveaux
+        })
+        .catch(error => {
+            console.error("Erreur lors de la récupération des travaux :", error);
+        });
+}
 
 // fonction pour créer les images 
 function createimage(imageUrl, title) {
