@@ -1,0 +1,652 @@
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+body {
+	line-height: 1;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/** end reset css**/
+body {
+	max-width: 1140px;
+	margin: auto;
+	font-family: 'Work Sans';
+	font-size: 14px;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
+}
+
+section {
+	margin: 50px 0
+}
+
+h1 {
+	display: flex;
+	flex-direction: column;
+	font-family: 'Syne';
+	font-size: 22px;
+	font-weight: 800;
+	color: #B1663C
+}
+
+h1>span {
+	font-family: 'Work Sans';
+	font-size: 10px;
+	letter-spacing: 0.1em;
+	;
+}
+
+h2 {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 30px;
+	color: #1D6154
+}
+
+nav ul {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+
+}
+
+nav li {
+	padding: 0 10px;
+	font-size: 1.2em;
+}
+
+li:hover {
+	color: #B1663C;
+}
+
+#introduction {
+	display: flex;
+	align-items: center;
+}
+
+#introduction figure {
+	flex: 1
+}
+
+#introduction img {
+	display: block;
+	margin: auto;
+	width: 80%;
+}
+
+#introduction article {
+	flex: 1
+}
+
+#introduction h2 {
+	margin-bottom: 1em;
+}
+
+#introduction p {
+	margin-bottom: 0.5em;
+}
+
+#portfolio h2 {
+	text-align: center;
+	/* margin-bottom: 1em; */
+}
+
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
+
+.gallery img {
+	width: 100%;
+
+}
+
+#contact {
+	width: 50%;
+	margin: auto;
+}
+
+#contact>* {
+	text-align: center;
+
+}
+
+#contact h2 {
+	margin-bottom: 20px;
+}
+
+#contact form {
+	text-align: left;
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#contact input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#contact p {
+	text-align: center;
+	color: #3D3D3D;
+	font-weight: 500;
+
+}
+
+#contact label {
+	margin: 2em 0 1em 0;
+}
+
+#contact textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+input[type="submit"] {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: #1D6154;
+	margin: 2em auto;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px;
+}
+
+footer nav ul {
+	display: flex;
+	justify-content: flex-end;
+	margin: 2em
+}
+
+/* filtres */
+.tousActif{
+	background: #1D6154 !important;
+	color: white !important;
+}
+.filtres {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	height: 38px;
+	margin-bottom: 30px;
+}
+
+.filtres button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 100px;
+
+	border-radius: 60px;
+	border: 1px solid #1D6154;
+	background-color: white;
+	color: #1D6154;
+	font-weight: 700;
+	font-size: 16px;
+	font-family: Syne;
+	cursor: pointer;
+	padding: 10px 14px;
+}
+
+.filtres button:hover {
+	background: #1D6154;
+	color: white;
+}
+
+/*message d'erreur*/
+#messageerreur {
+
+	display: none;
+	font-size: 1.2em;
+	font-weight: 700;
+	color: red !important;
+	padding-top: 30px;
+}
+
+/* mode édition */
+.editmode {
+	width: 100%;
+	height: 59px;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background-color: black;
+	color: white;
+	font-size: 16px;
+	gap: 10px;
+}
+
+.editmodevisible {
+	display: flex;
+}
+
+.editmodeinvisible {
+	display: none;
+}
+
+.logout {
+	display: none;
+}
+
+/* bouton modifier */
+.modifier {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 1em;
+
+}
+
+.boutonmodifier {
+	display: none !important;
+}
+
+.btnedit {
+	visibility: hidden;
+}
+
+/* modal1 */
+
+.ajout-photo {
+	height: 36px;
+	width: 237px !important;
+	font-size: 1.2em;
+	border: none;
+	margin: 0;
+	display: flex;
+}
+
+.modal {
+	position: fixed;
+	/* top: 688px;
+	left: 660px;
+	width: 630px;
+	height: 688px; */
+	inset: 0;
+	background: rgb(0, 0, 0, 0.3);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.title-modal {
+	font-family: Work Sans;
+	font-weight: 400;
+	font-size: 26px;
+	line-height: 100%;
+	text-align: center;
+	padding: 30px;
+	margin-top: 30px;
+
+}
+
+.fermer {
+	position: absolute;
+	top: 26px;
+	right: 30px;
+	background: none;
+	border: none;
+	font-size: 24px;
+}
+
+.ligne {
+	width: 420px;
+	margin: auto;
+	border-width: 1px;
+	border: 1px solid #B3B3B3;
+	margin-top: 30px;
+}
+
+.modal[aria-hidden="false"] {
+	display: flex;
+	/* visible quand aria-hidden = false */
+	justify-content: center;
+	align-items: center;
+}
+
+.modal-content {
+	position: relative;
+	background: #FFFFFF;
+	width: 630px;
+	height: 688px;
+	border-radius: 10px;
+	flex-direction: column;
+	display: flex;
+	align-items: center;
+}
+
+/* modal2 */
+.modal2 {
+	position: fixed;
+	inset: 0;
+	background: rgb(0, 0, 0, 0.3);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal2[aria-hidden="false"] {
+	display: flex;
+	/* visible quand aria-hidden = false */
+}
+
+.page-precedente {
+	position: absolute;
+	top: 27px;
+	left: 30px;
+	background: none;
+	border: none;
+	font-size: 24px;
+}
+
+#precedent {
+	background: none;
+	border: none;
+}
+
+/* gerer la gride de la modal  */
+.gallery1 {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	gap: 10px;
+	padding: 15px 105px;
+}
+
+.gallery1 figure {
+	margin: 0;
+	padding: 0;
+	padding-bottom: 20px;
+	position: relative;
+}
+
+.gallery1 img {
+	width: 76px;
+	height: 102px;
+
+	object-fit: cover;
+
+	border-radius: 6px;
+	display: block
+}
+
+/* poubellle  */
+.bouton-poubelle {
+	background: #000000;
+	border: none;
+	border-radius: 2px;
+	position: absolute;
+	top: 6px;
+	right: 5px;
+	width: 17px;
+	height: 17px;
+}
+
+.bouton-poubelle i {
+	color: #FFFFFF;
+	width: 5px;
+	height: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* modal2 partie ajout photos */
+
+
+.zone-photos {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	align-items: center;
+	justify-content: center;
+	width: 420px;
+	height: 169px;
+
+	background: #E8F1F6;
+
+	border-radius: 3px;
+	margin-bottom: 20px;
+}
+
+.zone-photos-icone {
+	width: 76px;
+	height: 76px;
+}
+
+i.fa-regular.fa-image {
+	width: 68px;
+	height: 59px;
+	color: #B9C5CC;
+
+	font-size: 60px;
+	padding: 8px 4px;
+}
+
+#file {
+	display: none;
+}
+
+#inserer-photo {
+	width: 173px;
+	height: 36px;
+	border: none;
+	background: #CBD6DC;
+	color: #306685;
+	font-size: 14px;
+	border-radius: 50px;
+	font-family: Work Sans;
+	font-weight: 500;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+small {
+
+	font-size: 10px;
+	color: #444444
+}
+
+.champs-photos {
+	display: flex;
+	flex-direction: column;
+
+	gap: 10px;
+
+}
+
+.champs-photos label {
+	padding-top: 10px;
+}
+
+#titre-photo,
+#category {
+	width: 420px;
+	height: 51px;
+
+	top: 1011px;
+	left: 510px;
+	background: #FFFFFF;
+	box-shadow: 0px 4px 14px 0px #00000017;
+	border: none;
+
+}
+
+#titre-photo {
+	margin: 0;
+	padding: 0;
+}
+
+#affiche-image {
+	width: 129px;
+	height: 193px;
+	border: none;
+}
+
+.ajout-photo.valider[disabled] {
+	background: #A7A7A7;
+	cursor: not-allowed;
+}
+
+.ajout-photo.valider.enabled {
+	background: #1D6154 ;
+	color: #fff;
+	cursor: pointer;
+}
+
+#erreur {
+	color: red;
+	font-size: 12px;
+	display: none;
+	margin-top: 4px;
+}
+
+#succes {
+	color: green;
+	font-size: 16px;
+	display: none;
+	margin-top: 4px;
+	margin: auto;
+}
