@@ -7,26 +7,13 @@ getWork();         //charger la galerie a l'ouverture de la page
 
 fetch("http://localhost:5678/api/categories")
     .then(response => response.json())
-    .then(FiltreCategories => {
-        const filtersContainer = document.querySelector(".filtres");
-
-
-        //funtion pour l'état actif des boutons 
-        function setActive(btn) {
-            const boutons = filtersContainer.querySelectorAll("button");
-
-            for (let i = 0; i < boutons.length; i++) {
-                boutons[i].classList.remove("tousActif"); // retirer la classe avtive sur tous les boutons 
-            }
-
-            btn.classList.add("tousActif"); // appliquer la classe avtive sur le bouton cliqué 
-        }
+    .then(filtreCategories => {
+        const filtersContainerEl = document.querySelector(".filtres");
 
         //  création du bouton Tous
         const tous = document.createElement("button");
         tous.innerHTML = "Tous";
-        tous.dataset.category = ""; // important pour reconnaître "Tous"
-        filtersContainer.appendChild(tous);
+        filtersContainerEl.appendChild(tous);
 
         tous.addEventListener("click", () => {
             setActive(tous); // activer le bouton tous 
@@ -37,21 +24,19 @@ fetch("http://localhost:5678/api/categories")
                 gallery.appendChild(createimage(allWorks[j].imageUrl, allWorks[j].title)); // afficher tous les travaux 
             }
         });
-
         // création des boutons de catégories
-        for (let i = 0; i < FiltreCategories.length; i++) {
+        for (let i = 0; i < filtreCategories.length; i++) {
 
-            const text = document.createElement("button");
-            text.innerHTML = FiltreCategories[i].name;
-            text.dataset.category = (FiltreCategories[i].id); // lier le bouton à l'id catégorie
-            filtersContainer.appendChild(text);
+            const filterBtn = document.createElement("button");
+            filterBtn.innerHTML = filtreCategories[i].name;
+            filtersContainerEl.appendChild(filterBtn);
 
-            text.addEventListener("click", () => {
-                setActive(text);
+            filterBtn.addEventListener("click", () => {
+                setActive(filterBtn);
                 const gallery = document.querySelector(".gallery");
                 gallery.innerHTML = ""; // vider la galerie
 
-                const catId = (FiltreCategories[i].id);
+                const catId = (filtreCategories[i].id);
                 for (let j = 0; j < allWorks.length; j++) {
                     if ((allWorks[j].categoryId) === catId) {
                         gallery.appendChild(createimage(allWorks[j].imageUrl, allWorks[j].title));
@@ -59,14 +44,7 @@ fetch("http://localhost:5678/api/categories")
                 }
             });
         }
-
-        //affichage des travaux
         setActive(tous); // activer le bouton tous 
-        const gallery = document.querySelector(".gallery");
-        gallery.innerHTML = "";
-        for (let j = 0; j < allWorks.length; j++) {
-            gallery.appendChild(createimage(allWorks[j].imageUrl, allWorks[j].title));
-        }
     })
     .catch(erreur => {
         console.error(erreur);
@@ -123,7 +101,6 @@ openmodal1.addEventListener("click", () => {
 
                 // supprimer les images
                 poubelle.addEventListener("click", () => {
-
                     const token = localStorage.getItem("token");
 
                     fetch(`http://localhost:5678/api/works/${id}`, {
@@ -134,7 +111,7 @@ openmodal1.addEventListener("click", () => {
                     })
                         .then(response => {
                             if (response.status === 200 || response.status === 204) {
-                                figure1.remove();//supprimer du Dom
+                                figure1.remove();//supprimer de la modal 
                                 getWork() //télécharger la nouvelle version des travaux
 
                             } else if (response.status === 401) {
@@ -171,7 +148,7 @@ openmodal2.addEventListener("click", () => {
     modal1.setAttribute("aria-hidden", "true");
     modal2.setAttribute("aria-hidden", "false");
 
-    // récupèrationtous les éléments
+    // récupèration de tous les éléments
     const erreur = document.getElementById("erreur");  // zone du message d'erreur 
     const succes = document.getElementById("succes"); // zone du message de succès 
     const file = document.getElementById("file"); // input file pour choisir la photo
@@ -244,8 +221,7 @@ openmodal2.addEventListener("click", () => {
                     option.value = liste[i].id;
                     categories.appendChild(option);
                 }
-
-                activeBtn();  // met à jour le bouton sans re-cliquer le select
+                activeBtn();
             });
     });
 
@@ -302,7 +278,6 @@ openmodal2.addEventListener("click", () => {
                 erreur.textContent = "Erreur réseau. Veuillez réessayer plus tard.";
                 erreur.style.display = "block";
             });
-
     }, { once: true });
 
     function activeBtn() {
@@ -313,7 +288,6 @@ openmodal2.addEventListener("click", () => {
         } else {
             validerBtn.classList.remove("enabled");
         }
-
     }
     // on vérifie à chaque modification
 
@@ -322,11 +296,11 @@ openmodal2.addEventListener("click", () => {
     activeBtn();
 });
 
-
-//fermer la modal avec le bouton +
+//fermer la modal 
 const closemodal2 = document.getElementById("closemodal2");
 const modal2 = document.getElementById("modal2");
 fermerModal(modal2, closemodal2);
+
 //retour a modal1
 const retour = document.getElementById("precedent");
 retour.addEventListener("click", () => {
@@ -369,6 +343,16 @@ function createimage(imageUrl, title) {
     figureElement.appendChild(captionElement); //ajout des titres à l'élément figure
 
     return figureElement;
+}
+
+//funtion pour l'état actif des boutons 
+function setActive(btn) {
+    const boutons = document.querySelectorAll(".filtres button");
+
+    for (let i = 0; i < boutons.length; i++) {
+        boutons[i].classList.remove("tousActif"); // retirer la classe avtive sur tous les boutons 
+    }
+    btn.classList.add("tousActif"); // appliquer la classe avtive sur le bouton cliqué 
 }
 
 // open et close modale 
